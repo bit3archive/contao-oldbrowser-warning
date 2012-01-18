@@ -1,0 +1,55 @@
+
+<section class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+
+	<?php if ($this->headline): ?>
+	<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+	<?php endif; ?>
+
+	<?php
+	if (file_exists(TL_ROOT . '/' . $this->details->icon)):
+	?>
+	<figure class="browser_icon">
+		<?php
+			$size = deserialize($this->size, true);
+			echo $this->generateImage(
+				$this->getImage($this->details->icon,
+					isset($size[0]) ? $size[0] : '',
+					isset($size[1]) ? $size[1] : '',
+					isset($size[2]) ? $size[2] : ''),
+				$this->details->title);
+		?>
+	</figure>
+	<?php
+	endif;
+	?>
+
+	<div class="browser_current_version">
+		<?php printf($GLOBALS['TL_LANG']['oldbrowserwarning']['used_browser'], $this->details->title, $this->details->usedVersion); ?>
+	</div>
+
+	<?php
+	if ($this->details->supported && !version_compare($this->details->supportedVersion, implode('.', $this->agent->versions), '>')):
+	?>
+	<div class="browser_featured_version">
+		<?php printf($GLOBALS['TL_LANG']['oldbrowserwarning']['featured_browser'], $this->details->title, $this->details->supportedVersion); ?>
+	</div>
+
+	<div class="browser_update_url">
+		<a class="button" href="%s" onclick="window.open(this.href); return false;"><?php printf($GLOBALS['TL_LANG']['oldbrowserwarning']['update_browser'], $this->details->title, $this->details->supportedVersion); ?></a>
+	</div>
+	<?php
+	elseif ($this->details->supported):
+	?>
+	<div class="browser_supported_version">
+		<?php printf($GLOBALS['TL_LANG']['oldbrowserwarning']['supported_browser'], $this->details->title, $this->details->supportedVersion); ?>
+	</div>
+	<?php
+	else:
+	?>
+	<div class="browser_unsupported_version">
+		<?php printf($GLOBALS['TL_LANG']['oldbrowserwarning']['unsupported_browser'], $this->details->title, $this->details->supportedVersion); ?>
+	</div>
+	<?php
+	endif;
+	?>
+</section>
