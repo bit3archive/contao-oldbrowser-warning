@@ -12,4 +12,7 @@
 -- 
 
 CREATE TABLE `tl_content` (
+  `oldbrowserwarning_show_unsupported` char(1) NOT NULL default '',
+  `oldbrowserwarning_fixed_sorting` char(1) NOT NULL default '',
+  `oldbrowserwarning_sorting` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

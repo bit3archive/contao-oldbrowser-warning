@@ -36,7 +36,11 @@
 /**
  * System configuration
  */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{oldbrowserwarning_legend:hide},oldbrowserwarning_use_htaccess';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{oldbrowserwarning_legend:hide},';
+
+$arrMetaPalette = array(
+	'oldbrowserwarning' => array(':hide', 'oldbrowserwarning_use_htaccess')
+);
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['oldbrowserwarning_use_htaccess'] = array(
 	'label'     => &$GLOBALS['TL_LANG']['tl_settings']['oldbrowserwarning_use_htaccess'],
@@ -46,7 +50,10 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['oldbrowserwarning_use_htaccess'] = 
 foreach ($GLOBALS['TL_CONFIG']['browser'] as $title=> $browser) {
 	$name = $browser['browser'];
 
-	$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ',oldbrowserwarning_browser_' . $name . '_title,oldbrowserwarning_browser_' . $name . '_url,oldbrowserwarning_browser_' . $name . '_description,oldbrowserwarning_browser_' . $name . '_icon';
+	$arrMetaPalette['oldbrowserwarning'][] = 'oldbrowserwarning_browser_' . $name . '_title';
+	$arrMetaPalette['oldbrowserwarning'][] = 'oldbrowserwarning_browser_' . $name . '_url';
+	$arrMetaPalette['oldbrowserwarning'][] = 'oldbrowserwarning_browser_' . $name . '_description';
+	$arrMetaPalette['oldbrowserwarning'][] = 'oldbrowserwarning_browser_' . $name . '_icon';
 
 	$GLOBALS['TL_DCA']['tl_settings']['fields']['oldbrowserwarning_browser_' . $name . '_title'] = array(
 		'label'     => array(
@@ -84,3 +91,5 @@ foreach ($GLOBALS['TL_CONFIG']['browser'] as $title=> $browser) {
 		                     'fieldType' => 'radio')
 	);
 }
+
+MetaPalettes::appendTo('tl_settings', $arrMetaPalette);

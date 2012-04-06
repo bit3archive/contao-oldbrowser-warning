@@ -33,3 +33,65 @@
  */
 
 
+/**
+ * Class ContentOldBrowserWarningAlternatives
+ *
+ *
+ * @copyright  InfinitySoft 2010,2011
+ * @author     Tristan Lins <tristan.lins@infinitysoft.de>
+ * @package    OldBrowserWarning
+ */
+class ContentOldBrowserWarningAlternatives extends ContentOldBrowserWarning
+{
+	/**
+	 * Template
+	 * @var string
+	 */
+	protected $strTemplate = 'ce_oldbrowserwarning_alternatives';
+
+
+	/**
+	 * Compile the current element
+	 */
+	protected function compile()
+	{
+		$ua = $this->Environment->agent;
+		if (!isset($ua->versions)) {
+			$this->extendBrowserVersions($ua);
+		}
+
+		$browsers = array();
+		foreach ($GLOBALS['TL_CONFIG']['browser'] as $v)
+		{
+			// skip current browser
+			if ($ua->browser != $v['browser']) {
+				continue;
+			}
+
+			$details = $this->getBrowserDetails($v['browser']);
+
+			// only add if show unsupported browsers or the browser is supported
+			if ($this->oldbrowserwarning_show_unsupported
+				|| $this->oldbrowserwarning_fixed_sorting
+				|| $details->supported) {
+				$browsers[$v['browser']] = $details;
+			}
+		}
+
+		if ($this->oldbrowserwarning_fixed_sorting) {
+			$sorting = deserialize($this->oldbrowserwarning_sorting, true);
+			$buffer = array();
+			foreach ($sorting as $sort) {
+				if (isset($browsers[$sort])) {
+					$buffer[$sort] = $browsers[$sort];
+				}
+			}
+			$browsers = $buffer;
+		} else {
+			shuffle($browsers);
+		}
+
+		$this->Template->agent    = $ua;
+		$this->Template->browsers = $browsers;
+	}
+}

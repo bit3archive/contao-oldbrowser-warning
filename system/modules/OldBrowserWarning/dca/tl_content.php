@@ -38,14 +38,35 @@ $this->loadLanguageFile('oldbrowserwarning');
 /**
  * Content element
  */
-$GLOBALS['TL_DCA']['tl_content']['metapalettes']['oldbrowserwarning_version']               = array(
+$GLOBALS['TL_DCA']['tl_content']['metapalettes']['oldbrowserwarning_version']          = array(
 	'type'              => array('type', 'headline'),
 	'oldbrowserwarning' => array('size'),
 	'protected'         => array('protected'),
 	'expert'            => array('guests,invisible,cssID,space')
 );
-$GLOBALS['TL_DCA']['tl_content']['metasubpalettes']['oldbrowserwarning_browser_ie_support'] = array(
-	'oldbrowserwarning_browser_ie_version', 'oldbrowserwarning_browser_ie_title', 'oldbrowserwarning_browser_ie_url', 'oldbrowserwarning_browser_ie_description', 'oldbrowserwarning_browser_ie_icon'
+$GLOBALS['TL_DCA']['tl_content']['metapalettes']['oldbrowserwarning_alternatives']     = array(
+	'type'                                             => array('type', 'headline'),
+	'oldbrowserwarning'                                => array('size', 'oldbrowserwarning_show_unsupported', 'oldbrowserwarning_fixed_sorting'),
+	'oldbrowserwarning_fixed_sorting' => array('size', 'oldbrowserwarning_fixed_sorting', 'oldbrowserwarning_sorting'),
+	'protected'                                        => array('protected'),
+	'expert'                                           => array('guests,invisible,cssID,space')
+);
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['oldbrowserwarning_show_unsupported'] = array(
+	'label'     => &$GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_show_unsupported'],
+	'inputType' => 'checkbox',
+	'eval'      => array('tl_class'=> 'clr w50')
+);
+$GLOBALS['TL_DCA']['tl_content']['fields']['oldbrowserwarning_fixed_sorting']    = array(
+	'label'     => &$GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_fixed_sorting'],
+	'inputType' => 'checkbox',
+	'eval'      => array('submitOnChange'=>true, 'tl_class'=> 'w50')
+);
+$GLOBALS['TL_DCA']['tl_content']['fields']['oldbrowserwarning_sorting']          = array(
+	'label'            => &$GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_sorting'],
+	'inputType'        => 'checkboxWizard',
+	'options_callback' => array('tl_content_oldbrowserwarning', 'getSortOptions'),
+	'eval'             => array('tl_class'=> 'clr')
 );
 
 /**
@@ -55,6 +76,9 @@ foreach ($GLOBALS['TL_CONFIG']['browser'] as $title=> $browser) {
 	$name = $browser['browser'];
 
 	$GLOBALS['TL_DCA']['tl_content']['metapalettes']['oldbrowserwarning_version']['oldbrowserwarning'][] = 'oldbrowserwarning_browser_' . $name . '_support';
+
+	$GLOBALS['TL_DCA']['tl_content']['metapalettes']['oldbrowserwarning_alternatives']['oldbrowserwarning'][]                                = 'oldbrowserwarning_browser_' . $name . '_support';
+	$GLOBALS['TL_DCA']['tl_content']['metapalettes']['oldbrowserwarning_alternatives']['oldbrowserwarningoldbrowserwarning_fixed_sorting'][] = 'oldbrowserwarning_browser_' . $name . '_support';
 
 	$GLOBALS['TL_DCA']['tl_content']['metasubpalettes']['oldbrowserwarning_browser_' . $name . '_support'] = array(
 		'oldbrowserwarning_browser_' . $name . '_version',
@@ -69,7 +93,8 @@ foreach ($GLOBALS['TL_CONFIG']['browser'] as $title=> $browser) {
 			sprintf($GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_browser_X_support'][1], $title)
 		),
 		'inputType' => 'checkbox',
-		'eval'      => array('submitOnChange'=> true, 'tl_class'=>'clr')
+		'eval'      => array('submitOnChange'=> true,
+		                     'tl_class'      => 'clr')
 	);
 	$GLOBALS['TL_DCA']['tl_content']['fields']['oldbrowserwarning_browser_' . $name . '_version']     = array(
 		'label'     => array(
@@ -127,4 +152,17 @@ foreach ($GLOBALS['TL_CONFIG']['browser'] as $title=> $browser) {
 		                     'extensions'=> 'jpeg,jpg,gif,bmp',
 		                     'fieldType' => 'radio')
 	);
+}
+
+class tl_content_oldbrowserwarning
+{
+	public function getSortOptions()
+	{
+		$options = array();
+		foreach ($GLOBALS['TL_CONFIG']['browser'] as $k=> $v)
+		{
+			$options[$v['browser']] = $k;
+		}
+		return $options;
+	}
 }

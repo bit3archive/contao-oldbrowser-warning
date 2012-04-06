@@ -36,6 +36,9 @@
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_show_unsupported']      = array('Nicht-unterstützte Browser auflisten', 'Zeigt auch die Browser auf, die nicht als "unterstützt" gekennzeichnet sind.');
+$GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_fixed_sorting']         = array('Vordefinierte Reihenfolge', 'Die Browser in einer vordefinierten Reihenfolge ausgeben und nicht zufällig sortieren.');
+$GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_sorting']               = array('Reihenfolge', 'Wählen Sie hier die angezeigten Browser aus und definieren Sie deren Anzeigereihenfolge.');
 $GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_browser_X_support']     = array('Den Browser %s unterstützen', 'Wählen Sie diese Option, wenn Sie den Browser %s unterstützen wollen.');
 $GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_browser_X_version']     = array('Unterstütze Version des Browsers %s', 'Geben Sie hier die unterstütze Version ein.');
 $GLOBALS['TL_LANG']['tl_content']['oldbrowserwarning_browser_X_title']       = array('Benutzerdefinierter Titel für den Browser %s', 'Geben Sie hier einen benutzerdefinierten Titel für den Browser %s an, ansonsten wird "%s" ausgegeben.');
